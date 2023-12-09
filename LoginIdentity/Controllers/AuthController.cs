@@ -124,5 +124,34 @@ namespace LoginIdentity.Controllers
             return token;
         }
 
+        //route to make user a admin
+        [HttpPost]
+        [Route("make-admin")]
+        public async Task<IActionResult> MakeAdmin([FromBody] UpdatePermissionDto model)
+        {
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user is null)
+            {
+                return BadRequest("Invalid username");
+            }
+            await _userManager.AddToRoleAsync(user, StaticUserRoles.ADMIN);
+            return Ok("User is now admin");
+        }
+
+        // route to make a user owner
+
+        [HttpPost]
+        [Route("make-owner")]
+        public async Task<IActionResult> MakeOwner([FromBody] UpdatePermissionDto model)
+        {
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user is null)
+            {
+                return BadRequest("Invalid username");
+            }
+            await _userManager.AddToRoleAsync(user, StaticUserRoles.OWNER);
+            return Ok("User is now owner");
+        }
+
     }
 }
