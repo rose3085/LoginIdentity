@@ -1,4 +1,6 @@
 using LoginIdentity.Data;
+using LoginIdentity.Entities;
+using LoginIdentity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddDbContext<DataContext>(options =>
     {
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -21,7 +24,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     
 
 // add identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 
